@@ -1,17 +1,20 @@
-export interface Email {
-	to: User,
+export interface EmailCreation {
+	to: string[],
 	cc: string[],
 	body: string,
 	subject: string,
+	sender:string
+}
+export interface Email extends EmailCreation {
 	read: boolean,
 	created_at: string,
-	sender:User 
 }
 
 export interface User {
 	id: number,
 	name: string,
-	email: string
+	email: string,
+	password : string
 }
 
 export interface Credentials {
@@ -26,10 +29,10 @@ export interface formattedEmails {
 	subject: string,
 	read: boolean,
 	created_at: string,
+	emailUuid : string
 }
 
-export interface dashboardProps { 
-	emails : formattedEmails[], 
-	// isDisconnected : boolean,
-	getEmailsUpdate : () => void
-};
+export interface ParamTypes {
+	emailAction: string
+	emailUuid?:string
+}

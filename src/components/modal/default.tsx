@@ -1,34 +1,40 @@
-import React, { useState, Dispatch } from 'react';
-import { Table, Button, List, Row } from 'antd';
+import React, { Dispatch } from 'react';
+import { Modal } from 'antd';
 import { connect } from 'react-redux';
-// import './App.css';
-// import {formattedEmails} from '../../types';
-// import {opsList, composeEmailTxt} from './config';
-import {getEmails} from '../../store/emails/actions';
-import {openModal} from '../../store/modal/actions';
-import {ActionTypes, ModalProps} from '../../store/modal/types';
+import {closeModal} from '../../store/modal/actions';
+import {ActionTypes} from '../../store/modal/types';
+import ComponentRegistry from './component-registry';
 
 
-function DefaultModal() {
-    
-
-    return (
-      <>
-        
-      </>
-    );
+function DefaultModal({data, closeModal}:any) {
+  const {open, header, className} = data;
+  
+  return (
+    <Modal
+      title={<h4>{header}</h4>}
+      maskClosable={false}
+      className={className || ''}
+      visible={!!open}
+      footer={null}
+      onCancel={() => closeModal()}
+    >
+      <div>
+        <ComponentRegistry data={data} />
+      </div>
+    </Modal>
+    );  
 }
 
-const mapStateToProps = (state:any) => {
+
+const mapStateToProps = ({modal}:any) => {
   return {
-    // emails : state.emails,
-    // isDisconnected : state.connection.isDisconnected
+    data : modal.data,
   }
 }
 
 const mapDispatchToProps = (dispatch:Dispatch<ActionTypes>) => {
   return {
-    //openModal: () => dispatch(openModal())
+    closeModal: () => dispatch(closeModal())
   };
 };
 

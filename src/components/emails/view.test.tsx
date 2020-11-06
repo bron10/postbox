@@ -2,10 +2,10 @@ import React from 'react';
 import { Provider } from "react-redux";
 import { BrowserRouter } from 'react-router-dom';
 import { render, fireEvent } from '@testing-library/react';
-import Ops from './ops';
+import EmailView from './view';
 import {configureStore} from '../../store';
 describe('EmailOps component', () => {
-  const setUpFn = (emailAction:string) => {
+  const setUpFn = () => {
     const store = configureStore();
   
     Object.defineProperty(window, "matchMedia", {
@@ -24,20 +24,22 @@ describe('EmailOps component', () => {
     
     return render(<Provider store={store}>
       <BrowserRouter>
-      <Ops selectedAction = {emailAction}/>
+        <EmailView/>
       </BrowserRouter>
     </Provider>);
   };
 
   let wrapper:any;
   beforeAll(() => {
-    wrapper = setUpFn('inbox');
+    wrapper = setUpFn();
   });
 
   test('on render', () => {    
-    const { getByText } = wrapper;
-    expect(getByText('Inbox')).toBeInTheDocument();
-    expect(getByText('Send email')).toBeInTheDocument();
+    const { container } = (wrapper);
+    
+    expect(container.querySelector('.ant-descriptions-title')).toBeInTheDocument();
+    expect(container.querySelector('.ant-descriptions-item-label')).toBeInTheDocument();
+    expect(container.querySelector('.ant-descriptions-item-content')).toBeInTheDocument();
   })
 
 })

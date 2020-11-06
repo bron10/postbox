@@ -13,7 +13,7 @@
 }
 
 .email-list-container{
-  width : 70%;
+  width : 80%;
   float: left;
 }
 
@@ -21,6 +21,22 @@
   background: #fff;
 }
 .email-ops-container{
-  width: 30%;
+  width: 20%;
   float: left;
+}
+.ant-layout-header{
+  background: #2C5773 !important;
+}
+.actions-right{
+  float: right;
+  margin : 20px
+}
+.mail-icon-style{
+  float:right;
+  font-size: 30px;
+  /* color: #fff; */
+  background: #fff;
+}
+.mail-count{
+  color : #fff
 }

@@ -1,0 +1,10 @@
+
+.compose-email{
+  margin : 20px 0;
+  align-items: center;
+  justify-content: center;
+}
+.compose-email > Button{
+  display: inline-block;
+
+}

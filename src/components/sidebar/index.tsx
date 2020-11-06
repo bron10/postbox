@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, Dispatch, useState} from 'react';
 
 import { Layout, Menu } from 'antd';
 import {menuList} from './config'
@@ -6,19 +6,16 @@ const { SubMenu } = Menu;
 const { Sider } = Layout;
 
 function Sidebar() {
-    
+  const [collapsed, onCollapse] = useState(false);
     return (
       <Sider
+      collapsible
+      collapsed={collapsed} onCollapse={(c) => onCollapse(c)}
+      theme="light"
       breakpoint="lg"
-      collapsedWidth="0"
-      onBreakpoint={broken => {
-        console.log(broken);
-      }}
-      onCollapse={(collapsed, type) => {
-        console.log(collapsed, type);
-      }} >
-      <div className="logo" />
-      <Menu theme="dark" mode="inline" defaultSelectedKeys={['0']}>
+       >
+      
+      <Menu theme="light" mode="inline">
         {menuList.map(({subMenu, title}, index)=>{
           if(subMenu){
             return (

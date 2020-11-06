@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../../__mocks___/matchMedia';
 import { render, fireEvent } from '@testing-library/react';
 import Sidebar from './index';
 import {menuList} from './config';
@@ -23,9 +22,6 @@ describe('EmailOperation component', () => {
 
     menuList.forEach(({title, subMenu})=>{
       expect(getByText(title)).toBeInTheDocument();
-      if(subMenu){
-        // subMenu.forEach(({title}) => expect(getByText(title)).toBeInTheDocument())  
-      }
     })
   })
 })

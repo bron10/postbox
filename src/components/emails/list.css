@@ -1,0 +1,9 @@
+.delete-action{
+  background: #BF5454 !important;
+  color : #fff !important;
+  float:right;
+  margin : 0 20px 20px 0;
+}
+.email-read{
+  background: #F2F2F2;
+}

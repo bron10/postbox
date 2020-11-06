@@ -1,44 +1,48 @@
-import React, { useState, Dispatch } from 'react';
-import { Table, Button, List, Row } from 'antd';
+import React, {  Dispatch } from 'react';
+import {Link} from 'react-router-dom';
+import { Button, List, Row } from 'antd';
 import { connect } from 'react-redux';
-// import './App.css';
+import './ops.css';
 // import {formattedEmails} from '../../types';
 import {opsList, composeEmailTxt} from './config';
-import {getEmails} from '../../store/emails/actions';
 import {openModal} from '../../store/modal/actions';
 import {ActionTypes, ModalProps} from '../../store/modal/types';
 
 interface EmailOps {
-  openModal : (text:string, options:ModalProps) => void
+  openModal : (options:ModalProps) => void,
+  selectedAction : string
 } 
 
-function EmailOps({openModal}: EmailOps) {
+function EmailOps({openModal, selectedAction}: EmailOps) {
     
     const composeEmail = (e: React.SyntheticEvent<EventTarget>) => {
       const options = {
-        modalProps: {
-          header: `Compose email`,
-          className:'large-modal'
-        }
+        type : 'COMPOSE_EMAIL',
+        header: `Compose email`,
+        className:'large-modal',
+        open : true,
       };
-      return openModal(`COMPOSE_EMAIL`, options);  
+      return openModal(options);  
     }
-
+    
     return (
       <>
-        <Row>
+        <Row className="compose-email">
           <Button onClick = {(e) => composeEmail(e)}>{composeEmailTxt}</Button>
         </Row>
-        <Row>
+        
           <List
             size="small"
-            // header={<div>Header</div>}
-            // footer={<div>Footer</div>}
             bordered
             dataSource={opsList}
-            renderItem={item => <List.Item>{item.title}</List.Item>}
+            renderItem={({title, type}) => {
+              const selectedOptionClass = selectedAction ===type ? 'action-selected' : '';
+              
+              return <Link to={`/dashboard/${type}/list`}>
+                <List.Item className ={selectedOptionClass}>{title}</List.Item></Link>
+          }}
           />      
-        </Row>
+        
       </>
     );
 }
@@ -46,13 +50,12 @@ function EmailOps({openModal}: EmailOps) {
 const mapStateToProps = (state:any) => {
   return {
     emails : state.emails,
-    // isDisconnected : state.connection.isDisconnected
   }
 }
 
 const mapDispatchToProps = (dispatch:Dispatch<ActionTypes>) => {
   return {
-    openModal: () => dispatch(openModal())
+    openModal: (data:ModalProps) => dispatch(openModal(data))
   };
 };
 

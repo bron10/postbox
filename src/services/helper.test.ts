@@ -8,13 +8,10 @@ describe('Test function : services/helper => formatEmailData', () => {
       subject: "new subject this is",
       read: false,
       created_at: "2020-10-25T17:09:29.467Z",
-      sender: {"email":"noreply@gmail.com", "name":"no rply", "id": 13},
-      "to": {
-      "email" : "bron@gmail.com",
-       "name": "bron",
-       "id" : 12}
+      sender: "noreply@gmail.com",
+      to: ["bron@gmail.com"]
     }]
   
-    expect(emailsList.length).toBe(formatEmailData()(emailsList).length)
+    expect(emailsList.length).toBe(formatEmailData(emailsList).length)
   })
 })

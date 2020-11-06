@@ -2,9 +2,14 @@
 import {
     ActionTypes,
     GET_EMAILS_SUCCESS,
+    SEND_EMAIL_SUCCESS,
+    RESET_OPERATIONS
   } from './types'
-  import {formatEmailData} from '../../services/helper';
-  const initialState : any= []
+  import {formatEmailData, getUnreadCount} from '../../services/helper';
+  const initialState = {
+    emails : [],
+    unreadCount : 0
+  }
   
   export function emailReducer(
     state = initialState,
@@ -12,8 +17,13 @@ import {
   ): any {
     switch (action.type) {
       case GET_EMAILS_SUCCESS:
-        return [...formatEmailData()(action.emails)]
-      
+        return {...state, ...{
+          emails : [...formatEmailData(action.emails)],
+          unreadCount : getUnreadCount(action.emails)
+        }}
+      case SEND_EMAIL_SUCCESS:
+        const data = {...state, ...{successMessage : action.message}}; 
+        return data
       default:
         return state
     }

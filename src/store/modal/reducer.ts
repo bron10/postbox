@@ -1,21 +1,21 @@
 
 import { CLOSE_MODAL, OPEN_MODAL , ModalProps, ActionTypes} from './types'
 
-  const initialState : ModalProps = {
-    modalProps : {}
+  const initialState : any = {
+    data : {},
   }
   
   export function modalReducer(
     state = initialState,
     action: ActionTypes
   ): any {
-    switch (action.type) {
-      case CLOSE_MODAL:
-        return {...state, ...initialState}
+    switch(action.type){
       case OPEN_MODAL:
-        return {...state, ...action}
-          
+        return {...state, ...action};
+      
       default:
-        return state
+        return {...state, data : {
+          open : false  
+        }}
     }
   }

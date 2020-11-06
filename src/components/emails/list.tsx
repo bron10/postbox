@@ -1,39 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, Dispatch } from 'react';
 import { Table, Button } from 'antd';
-// import './App.css';
-import {formattedEmails} from '../../types';
+import { Redirect, useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
+import {includes} from 'lodash';
+import './list.css';
+import {ParamTypes} from '../../types';
+import {emailListColumns, emailListFirstColumn} from './config';
+import {deleteEmail} from '../../store/emails/actions';
+import {ActionTypes} from '../../store/emails/types';
 
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'sender_name',
-    key : 'sender_name'
-  },
-  {
-    title: 'subject',
-    dataIndex: 'subject',
-    key : 'subject'
-  },
-  {
-    title: 'date',
-    dataIndex: 'created_at',
-    key : 'created_at'
-  },
-];
-
-function EmailList({emails}:any) {
+function EmailList({emails, deleteEmail}:any) {
+    const [goToView, viewIt] = useState('');
+    let { emailAction } = useParams<ParamTypes>();
+    const  firstColumn  = emailListFirstColumn[emailAction] || {};
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const onSelectChange = (selectedRowKeys:any) => {
       setSelectedRowKeys(selectedRowKeys);
     }
+
+    const deleteAnEmail = () => {
+      const emailList = emails
+      .filter((email:any, index:number) => includes(selectedRowKeys, index))
+      .map(({emailUuid}:any) => emailUuid)
+      deleteEmail(emailList);
+      setSelectedRowKeys([]);
+    }
+
+    if(goToView){
+      return <Redirect to= {`/dashboard/${emailAction}/view/${goToView}`} />
+    }
+
     return (
-      <Table rowSelection={{
-        selectedRowKeys,
-        onChange: onSelectChange,
-      }}
-      rowKey={({sender_email}, index) => sender_email}
-      columns={columns} dataSource={emails} />
+      <>
+        <Button onClick={() => deleteAnEmail()} className='delete-action' disabled={!selectedRowKeys.length}>Delete</Button>
+        <Table rowSelection={{
+          selectedRowKeys,
+          onChange: onSelectChange,
+        }}
+        rowClassName = {({readClass}, index) => (readClass || "")}
+        rowKey={({index}) => index}
+        onRow={({emailUuid}, rowIndex) => {
+          return {
+            onClick: event => viewIt(emailUuid)
+          }
+        }}
+        columns={[firstColumn, ...emailListColumns]} dataSource={emails} />
+      </>
     );
 }
 
-export default EmailList;
+
+
+const mapDispatchToProps = (dispatch:Dispatch<ActionTypes>) => {
+  return {
+    deleteEmail : (emailUuids:string[]) => dispatch(deleteEmail(emailUuids)),
+  };
+};
+
+const mapStateToProps = ({email, auth}:any) => {
+  return {
+    currentUser : auth.currentUser,
+    emails : email.emails,
+  }
+}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EmailList);

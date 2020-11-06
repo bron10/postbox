@@ -1,21 +1,34 @@
-
-export function formatEmailData(){
-  return (emails:any) => {
-    return emails.map(({
-      sender,
+export function formatEmailData(emails:any){
+  return emails.map(({
+    sender,
+    subject,
+    created_at,
+    to,
+    emailUuid,
+    read,
+    body,
+    cc
+  }:any, index:number) => {
+    return {
+      sender_name : sender.name || "",
+      sender : sender,
+      to : to, 
       subject,
-      created_at
-    }:any) => {
-      return {
-        sender_name : sender.name,
-        sender_email : sender.email,
-        subject,
-        created_at : getTimeInterval(created_at)
-      }
-    })    
-  };
+      created_at : getTimeInterval(created_at),
+      index,
+      emailUuid,
+      body,
+      cc,
+      read,
+      readClass : read? 'email-read' : ''
+    }
+  })
+  .sort((current:any, next:any) => next.created_at - current.created_at)
 }
 
+export function getUnreadCount(emails: any){
+  return emails.filter(({read}:any) => !read).length
+}
 
 
 function getTimeInterval(date:number) {
