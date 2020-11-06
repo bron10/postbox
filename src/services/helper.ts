@@ -33,6 +33,7 @@ export function getUnreadCount(emails: any){
 
 function getTimeInterval(date:number) {
   let seconds = Math.floor((Date.now() - date) / 1000);
+  console.log("seconds->", seconds, date)
   let unit = "second";
   let direction = "ago";
   if (seconds < 0) {

@@ -36,18 +36,17 @@ function Dashboard({unreadCount, match, signOut, currentUser, emails, successMes
   useEffect(()=>{
     if(successMessage){
       message.success(successMessage);
-      reset()
+      return reset()
     }
     if(errorMessage){
       message.success(errorMessage);
-      reset()
+      return reset()
     }
 
-    
     if(!isEmpty(currentUser)){
       getEmailsUpdate(currentUser.email, emailAction);
     }else{
-      goToLogin(true)
+      goToLogin(true);
     }
 
   })

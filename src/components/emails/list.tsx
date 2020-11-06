@@ -1,6 +1,6 @@
-import React, { useState, Dispatch } from 'react';
+import React, { useState, Dispatch, useEffect } from 'react';
 import { Table, Button } from 'antd';
-import { Redirect, useParams } from 'react-router-dom';
+import { Redirect, useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {includes} from 'lodash';
 import './list.css';
@@ -10,7 +10,7 @@ import {deleteEmail} from '../../store/emails/actions';
 import {ActionTypes} from '../../store/emails/types';
 
 function EmailList({emails, deleteEmail}:any) {
-    const [goToView, viewIt] = useState('');
+    const rhist:any = useHistory();
     let { emailAction } = useParams<ParamTypes>();
     const  firstColumn  = emailListFirstColumn[emailAction] || {};
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -25,10 +25,9 @@ function EmailList({emails, deleteEmail}:any) {
       deleteEmail(emailList);
       setSelectedRowKeys([]);
     }
+    
+    
 
-    if(goToView){
-      return <Redirect to= {`/dashboard/${emailAction}/view/${goToView}`} />
-    }
 
     return (
       <>
@@ -41,7 +40,7 @@ function EmailList({emails, deleteEmail}:any) {
         rowKey={({index}) => index}
         onRow={({emailUuid}, rowIndex) => {
           return {
-            onClick: event => viewIt(emailUuid)
+            onClick: event => rhist.push(`/dashboard/${emailAction}/view/${emailUuid}`)
           }
         }}
         columns={[firstColumn, ...emailListColumns]} dataSource={emails} />

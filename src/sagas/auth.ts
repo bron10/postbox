@@ -10,7 +10,6 @@ function* loginUpdates({credentials}: any) {
   try{
     // console.log("payload", payload);
     const currentUser = yield call(login, credentials)
-    console.log("response on login", currentUser);
     yield put(signInSuccess(currentUser));
   }catch({message}){
     yield put(notifyError(message || ANY_ERROR_TEXT));
@@ -22,7 +21,6 @@ function* signOutUpdates({currentUser}: any) {
     // console.log("payload", payload);
     const response = yield call(signout, currentUser)
     yield put(signOutSuccess()); 
-    yield put(notify(response.message)); 
   }catch({message}){
     yield put(notifyError(message || ANY_ERROR_TEXT));
   }  

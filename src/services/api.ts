@@ -21,10 +21,9 @@ export async function sendAccountEmail(email: EmailCreation){
   console.log("ermead", emails)
   if(emails && emails.length){
     const parsedEmails = JSON.parse(emails);
-    console.log("email in api", email);
-    console.log("paserd", parsedEmails)
     if(parsedEmails.length){
-      parsedEmails.push({...email, read: false, created_at : new Date().toISOString()})
+      let emailUuid = parsedEmails[0] ? (parsedEmails[0].emailUuid + 1) : 1234;
+      parsedEmails.unshift({...email, read: false, created_at : Date.now(), emailUuid : emailUuid})
     }
     localStorage.emails = JSON.stringify(parsedEmails);
     return {
@@ -42,7 +41,6 @@ export async function login(credentials: Credentials){
     const parsedUsers = JSON.parse(users);
     if(users.length){
       const selectedUser = parsedUsers.find(({email, password}: User) => credentials.email === email && credentials.password === password)
-      console.log("selectedUser", parsedUsers, credentials)
       if(selectedUser){
         localStorage.currentUser = JSON.stringify(selectedUser);    
         return Promise.resolve(selectedUser);    
