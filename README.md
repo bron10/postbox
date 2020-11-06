@@ -5,6 +5,12 @@ A simple and easy UI for a mail app in React, Typescript
 ## Working example
 ![Alt text](final.gif?raw=true "Title")
 
+### Example Credentials for use
+email : tom@gmail.com
+password : tom123
+email : jerry@gmail.com
+password : jerry123
+
 ## Usage
 In the project directory, you can run:
 
